@@ -15,6 +15,8 @@ declare module "react-mouse-particles" {
     radius?: number;
     cull?: string;
     life?: number;
+    tha?: number;
+    v?: number;
     g?: number;
   }
 

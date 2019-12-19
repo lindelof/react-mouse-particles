@@ -66,7 +66,6 @@ class MouseParticles extends React.Component {
 
     x = e.clientX;
     y = e.clientY;
-    console.log(x,y);
 
     this.emitter.p.x += (x - this.emitter.p.x) * this.ease;
     this.emitter.p.y += (y - this.emitter.p.y) * this.ease;
@@ -114,15 +113,17 @@ class MouseParticles extends React.Component {
     emitter.rate = new Proton.Rate(this.props.num || 3);
     emitter.damping = 0.008;
 
-    const life = this.props.life || new Proton.Life(0.2, 0.5);
-    const radius = this.props.radius || new Proton.Radius(2, 5);
+    const life = this.props.life ? new Proton.Life(this.props.life) : new Proton.Life(0.2, 0.5);
+    const radius = this.props.radius ? new Proton.Radius(this.props.radius) : new Proton.Radius(2, 5);
     const color = this.props.color || "random";
     const g = this.props.g;
+    const v = this.props.v || 0.65;
+    const tha = this.props.tha ? new Proton.Span(this.props.tha[0], this.props.tha[1]) : new Proton.Span(0, 360);
 
     emitter.addInitialize(new Proton.Mass(1));
     emitter.addInitialize(radius);
     emitter.addInitialize(life);
-    emitter.addInitialize(new Proton.Velocity(new Proton.Span(0.65), new Proton.Span(0, 360), "polar"));
+    emitter.addInitialize(new Proton.Velocity(new Proton.Span(v), tha, "polar"));
 
     emitter.addBehaviour(new Proton.Alpha(Proton.getSpan(0.25, 0.55)));
     emitter.addBehaviour(new Proton.Color(color));
@@ -156,24 +157,6 @@ function isTextBox(element) {
   let tagName = element.tagName.toLowerCase();
   if (tagName === "textarea") return true;
   if (tagName !== "input") return false;
-  let type = element.getAttribute("type").toLowerCase(),
-    // if any of these input types is not supported by a browser, it will behave as input type text.
-    inputTypes = [
-      "text",
-      "password",
-      "number",
-      "email",
-      "tel",
-      "url",
-      "search",
-      "date",
-      "datetime",
-      "datetime-local",
-      "time",
-      "month",
-      "week"
-    ];
-  return inputTypes.indexOf(type) >= 0;
 }
 
 export default MouseParticles;

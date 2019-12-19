@@ -14,6 +14,8 @@ A very fun react library that can be used to create mouse particle effects, whic
 
 ![](https://github.com/lindelof/react-mouse-particles/blob/master/image/01.gif?raw=true)
 
+![](https://github.com/lindelof/react-mouse-particles/blob/master/image/02.gif?raw=true)
+
 
 ## Install
 
@@ -49,6 +51,10 @@ class Example extends Component {
 #### * `num` - The number of particles emitted each time: Number
 
 #### * `radius` - The radius of every particle: Number
+
+#### * `tha` - The Particle emitter angle
+
+#### * `v` - The Particle emitter Particle velocity
 
 #### * `life` - The life of every particle: Number
 
