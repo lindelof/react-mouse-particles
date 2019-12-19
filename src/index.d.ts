@@ -4,58 +4,21 @@
 
 import React from 'react';
 
-declare module "particles-bg" {
+declare module "react-mouse-particles" {
 
   export type ConfigPositionProp = any;
   // Some typing error actual type should be:
 
-  // export type ConfigPositionProp =
-  // | "center"
-  // | "all"
-  // | { x: number; y: number; width: number; height: number }
-  export interface ConfigProp {
-    num: number[];
-    rps: number;
-    radius: number[];
-    life: number[];
-    v: number[];
-    tha: number[];
-    body?: string;
-    rotate?: number[];
-    alpha: number[];
-    scale: number[];
-    position: ConfigPositionProp;
-    color: string[];
-    cross: string;
-    random: number | null;
-    g: number;
-    f?: number[];
-    onParticleUpdate?: (ctx: any, particle: any) => void;
-  }
-
-  export type TypeProp =
-  | "color"
-  | "ball"
-  | "lines"
-  | "thick"
-  | "circle"
-  | "cobweb"
-  | "polygon"
-  | "square"
-  | "tadpole"
-  | "fountain"
-  | "random"
-  | "custom";
-
   export interface Props {
-    type?: TypeProp;
     num?: number;
-    bg?: boolean;
-    color?: string;
-    config: ConfigProp;
+    color?: any;
+    radius?: number;
+    cull?: string;
+    life?: number;
+    g?: number;
   }
 
-  class ParticlesBg extends React.Component<Props, any> {}
+  class MouseParticles extends React.Component<Props, any> {}
 
-  export default ParticlesBg;
+  export default MouseParticles;
 }

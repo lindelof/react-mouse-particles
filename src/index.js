@@ -7,11 +7,26 @@ export default class MouseParticles extends React.Component {
     super(props);
 
     this.ease = 0.7;
-    this._allowEmitting = false;
+    this.level = 0;
+    this.LEVEL = 5;
+    this._allowEmitting = true;
     this.renderProton = this.renderProton.bind(this);
     this.mouseMoveHandler = this.mouseMoveHandler.bind(this);
     this.mouseDownHandler = this.mouseDownHandler.bind(this);
     this.mouseUpHandler = this.mouseUpHandler.bind(this);
+
+    this.createContainerDom();
+  }
+
+  createContainerDom() {
+    this.dom = document.createElement("div");
+    this.dom.style.position = "absolute";
+    this.dom.style.left = "0px";
+    this.dom.style.top = "0px";
+    this.dom.style.zIndex = 9999;
+    this.dom.pointerEvents = "none";
+    this.dom.id = `rmp_${(Math.random() * 10000) >> 0}`;
+    document.body.appendChild(this.dom);
   }
 
   componentWillUnmount() {
@@ -25,12 +40,13 @@ export default class MouseParticles extends React.Component {
   }
 
   componentDidMount() {
-    this.onCanvasInited(canvas);
+    this.onCanvasInited();
     this.addMouseEventListener();
+    this.setCullList();
   }
 
-  onCanvasInited(canvas) {
-    this.createProton(canvas);
+  onCanvasInited() {
+    this.createProton();
     RAFManager.add(this.renderProton);
   }
 
@@ -40,7 +56,12 @@ export default class MouseParticles extends React.Component {
     document.addEventListener("mouseup", this.mouseUpHandler, false);
   }
 
+  mouseDownHandler(e) {}
+  mouseUpHandler(e) {}
+
   mouseMoveHandler(e) {
+    if (this.isCullDom(e)) return;
+
     if (e.layerX || e.layerX === 0) {
       this.emitter.p.x += (e.layerX - this.emitter.p.x) * this.ease;
       this.emitter.p.y += (e.layerY - this.emitter.p.y) * this.ease;
@@ -52,39 +73,62 @@ export default class MouseParticles extends React.Component {
     if (this._allowEmitting) this.emitter.emit("once");
   }
 
+  setCullList() {
+    this.cullClassList = this.props.cull || "";
+    this.cullClassList = this.cullClassList.split(",");
+  }
+
+  isCullDom(e) {
+    this.level = 0;
+    if (!this.cullClassList || !this.cullClassList.length) return false;
+    return this.isContain(e.target, this.cullClassList);
+  }
+
+  isContain(element, cullClassList) {
+    if (this.level >= this.LEVEL) return false;
+    if (!element) return false;
+    if (!element.classList) return false;
+    if (element === document.body) return false;
+
+    for (let i = 0; i < cullClassList.length; i++) {
+      if (element.classList.contains(cullClassList[i])) {
+        return true;
+      }
+    }
+    this.level++;
+
+    return this.isContain(element.parentNode, cullClassList);
+  }
+
   createProton(canvas) {
     this.proton = new Proton();
 
     const emitter = new Proton.Emitter();
-    emitter.rate = new Proton.Rate(this.props.num || 20);
+    emitter.rate = new Proton.Rate(this.props.num || 3);
     emitter.damping = 0.008;
 
+    const life = this.props.life || new Proton.Life(0.2, 0.5);
+    const radius = this.props.radius || new Proton.Radius(2, 5);
+    const color = this.props.color || "random";
+    const g = this.props.g;
+
     emitter.addInitialize(new Proton.Mass(1));
-    emitter.addInitialize(new Proton.Radius(30, 600));
-    emitter.addInitialize(new Proton.Velocity(new Proton.Span(0.5), new Proton.Span(0, 360), "polar"));
-    emitter.addInitialize(new Proton.Position(new Proton.RectZone(0, 0, canvas.width, canvas.height)));
+    emitter.addInitialize(radius);
+    emitter.addInitialize(life);
+    emitter.addInitialize(new Proton.Velocity(new Proton.Span(0.65), new Proton.Span(0, 360), "polar"));
 
-    emitter.addBehaviour(new Proton.Alpha(Proton.getSpan(0.35, 0.55)));
-    emitter.addBehaviour(new Proton.Color(this.getColor()));
-    emitter.addBehaviour(new Proton.RandomDrift(50, 50, 0.5));
-    this.proton.addEmitter(emitter);
-
-    const renderer = new Proton.DomRenderer(dom);
-    this.proton.addRenderer(renderer);
-    this.emitter = emitter;
-  }
-
-  getColor() {
-    let c = this.colors;
-    if (this.props.color) {
-      if (Array.isArray(this.props.color)) {
-        c = this.props.color;
-      } else {
-        c = [this.props.color];
-      }
+    emitter.addBehaviour(new Proton.Alpha(Proton.getSpan(0.25, 0.55)));
+    emitter.addBehaviour(new Proton.Color(color));
+    emitter.addBehaviour(new Proton.Scale(1, 0.1));
+    emitter.addBehaviour(new Proton.RandomDrift(10, 10, 0.2));
+    if (g) {
+      emitter.addBehaviour(new Proton.G(parseFloat(g)));
     }
 
-    return c;
+    this.proton.addEmitter(emitter);
+    const renderer = new Proton.DomRenderer(this.dom);
+    this.proton.addRenderer(renderer);
+    this.emitter = emitter;
   }
 
   renderProton() {
