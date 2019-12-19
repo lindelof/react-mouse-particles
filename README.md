@@ -9,8 +9,8 @@ A very fun react library that can be used to create mouse particle effects, whic
 #### Another react particle background animation library is here [https://github.com/lindelof/particles-bg](https://github.com/lindelof/particles-bg)
 
 ### Online demo
-* demo1 [https://stackblitz.com/edit/react-mouse-particle-other](https://stackblitz.com/edit/react-mouse-particle-other?file=index.js)
-* demo2 [https://stackblitz.com/edit/react-mouse-particles](https://stackblitz.com/edit/react-mouse-particles?file=index.js)
+* demo(01) [https://stackblitz.com/edit/react-mouse-particle-other](https://stackblitz.com/edit/react-mouse-particle-other?file=index.js)
+* demo(02) [https://stackblitz.com/edit/react-mouse-particles](https://stackblitz.com/edit/react-mouse-particles?file=index.js)
 
 ![](https://github.com/lindelof/react-mouse-particles/blob/master/image/01.gif?raw=true)
 
