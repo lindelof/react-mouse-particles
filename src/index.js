@@ -114,18 +114,23 @@ class MouseParticles extends React.Component {
     emitter.damping = 0.008;
 
     const life = this.props.life ? new Proton.Life(this.props.life) : new Proton.Life(0.2, 0.5);
-    const radius = this.props.radius ? new Proton.Radius(this.props.radius) : new Proton.Radius(2, 5);
     const color = this.props.color || "random";
     const g = this.props.g;
     const v = this.props.v || 0.65;
+    const alpha = this.props.alpha || Proton.getSpan(0.25, 0.55);
     const tha = this.props.tha ? new Proton.Span(this.props.tha[0], this.props.tha[1]) : new Proton.Span(0, 360);
+    let radius = new Proton.Radius(2, 5);
+    if (this.props.radius) {
+      const r = this.props.radius;
+      radius = new Proton.Radius(r * 0.8, r);
+    }
 
     emitter.addInitialize(new Proton.Mass(1));
     emitter.addInitialize(radius);
     emitter.addInitialize(life);
     emitter.addInitialize(new Proton.Velocity(new Proton.Span(v), tha, "polar"));
 
-    emitter.addBehaviour(new Proton.Alpha(Proton.getSpan(0.25, 0.55)));
+    emitter.addBehaviour(new Proton.Alpha(alpha));
     emitter.addBehaviour(new Proton.Color(color));
     emitter.addBehaviour(new Proton.Scale(1, 0.1));
     emitter.addBehaviour(new Proton.RandomDrift(10, 10, 0.2));

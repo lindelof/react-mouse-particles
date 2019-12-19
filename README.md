@@ -52,6 +52,8 @@ class Example extends Component {
 
 #### * `radius` - The radius of every particle: Number
 
+#### * `alpha` - The alpha of every particle: Number
+
 #### * `tha` - The Particle emitter angle
 
 #### * `v` - The Particle emitter Particle velocity
