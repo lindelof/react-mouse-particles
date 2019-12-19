@@ -4,9 +4,9 @@
 
 > A mouse particle effect react component
 
-A very fun react library that can be used to create mouse particle effects, which are as cool as meteors or fireballs.
+A very fun react library that can be used to create mouse particle effects, which are as cool as meteors or fireballs. I often want to use react to do something fun. Using this component may make your page instantly glorious.
 
-### Another react particle background animation library is here [https://github.com/lindelof/particles-bg](https://github.com/lindelof/particles-bg)
+#### Another react particle background animation library is here [https://github.com/lindelof/particles-bg](https://github.com/lindelof/particles-bg)
 
 ### Online demo
 * demo1 [https://stackblitz.com/edit/react-a6pm3w](https://stackblitz.com/edit/react-a6pm3w?file=index.js)
@@ -66,6 +66,9 @@ class Example extends Component {
 ```
 
 #### * `level` - Detect levels of culling animation
+
+## Contribution
+I very much hope that you can work with me to modify the code. I also have a lot of fun ideas. Maybe you can join me to implement it.
 
 ## License
 
