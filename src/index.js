@@ -2,7 +2,7 @@ import React from "react";
 import Proton from "proton-engine";
 import RAFManager from "raf-manager";
 
-export default class MouseParticles extends React.Component {
+class MouseParticles extends React.Component {
   constructor(props) {
     super(props);
 
@@ -20,20 +20,20 @@ export default class MouseParticles extends React.Component {
 
   createContainerDom() {
     this.dom = document.createElement("div");
-    this.dom.style.position = "absolute";
+    this.dom.style.position = "fixed";
     this.dom.style.left = "0px";
     this.dom.style.top = "0px";
     this.dom.style.zIndex = 9999;
     this.dom.pointerEvents = "none";
-    this.dom.id = `rmp_${(Math.random() * 10000) >> 0}`;
+    this.dom.id = `rmps_${(Math.random() * 999999) >> 0}`;
     document.body.appendChild(this.dom);
   }
 
   componentWillUnmount() {
     try {
-      document.removeEventListener("mousemove", this.mouseMoveHandler, false);
-      document.removeEventListener("mousedown", this.mouseDownHandler, false);
-      document.removeEventListener("mouseup", this.mouseUpHandler, false);
+      document.body.removeEventListener("mousemove", this.mouseMoveHandler, false);
+      document.body.removeEventListener("mousedown", this.mouseDownHandler, false);
+      document.body.removeEventListener("mouseup", this.mouseUpHandler, false);
       RAFManager.remove(this.renderProton);
       this.proton.destroy();
     } catch (e) {}
@@ -51,9 +51,9 @@ export default class MouseParticles extends React.Component {
   }
 
   addMouseEventListener() {
-    document.addEventListener("mousemove", this.mouseMoveHandler, false);
-    document.addEventListener("mousedown", this.mouseDownHandler, false);
-    document.addEventListener("mouseup", this.mouseUpHandler, false);
+    document.body.addEventListener("mousemove", this.mouseMoveHandler, false);
+    document.body.addEventListener("mousedown", this.mouseDownHandler, false);
+    document.body.addEventListener("mouseup", this.mouseUpHandler, false);
   }
 
   mouseDownHandler(e) {}
@@ -61,14 +61,15 @@ export default class MouseParticles extends React.Component {
 
   mouseMoveHandler(e) {
     if (this.isCullDom(e)) return;
+    let x,
+      y = 0;
 
-    if (e.layerX || e.layerX === 0) {
-      this.emitter.p.x += (e.layerX - this.emitter.p.x) * this.ease;
-      this.emitter.p.y += (e.layerY - this.emitter.p.y) * this.ease;
-    } else if (e.offsetX || e.offsetX === 0) {
-      this.emitter.p.x += (e.offsetX - this.emitter.p.x) * this.ease;
-      this.emitter.p.y += (e.offsetY - this.emitter.p.y) * this.ease;
-    }
+    x = e.clientX;
+    y = e.clientY;
+    console.log(x,y);
+
+    this.emitter.p.x += (x - this.emitter.p.x) * this.ease;
+    this.emitter.p.y += (y - this.emitter.p.y) * this.ease;
 
     if (this._allowEmitting) this.emitter.emit("once");
   }
@@ -76,11 +77,17 @@ export default class MouseParticles extends React.Component {
   setCullList() {
     this.cullClassList = this.props.cull || "";
     this.cullClassList = this.cullClassList.split(",");
+
+    this.LEVEL = this.props.level || 6;
   }
 
   isCullDom(e) {
     this.level = 0;
+
+    if (isInputText(e.target)) return true;
+    if (isTextBox(e.target)) return true;
     if (!this.cullClassList || !this.cullClassList.length) return false;
+
     return this.isContain(e.target, this.cullClassList);
   }
 
@@ -139,3 +146,34 @@ export default class MouseParticles extends React.Component {
     return <React.Fragment />;
   }
 }
+
+// utils function
+function isInputText(element) {
+  return element instanceof HTMLInputElement && element.type == "text";
+}
+
+function isTextBox(element) {
+  let tagName = element.tagName.toLowerCase();
+  if (tagName === "textarea") return true;
+  if (tagName !== "input") return false;
+  let type = element.getAttribute("type").toLowerCase(),
+    // if any of these input types is not supported by a browser, it will behave as input type text.
+    inputTypes = [
+      "text",
+      "password",
+      "number",
+      "email",
+      "tel",
+      "url",
+      "search",
+      "date",
+      "datetime",
+      "datetime-local",
+      "time",
+      "month",
+      "week"
+    ];
+  return inputTypes.indexOf(type) >= 0;
+}
+
+export default MouseParticles;
