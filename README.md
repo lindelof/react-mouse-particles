@@ -46,34 +46,21 @@ class Example extends Component {
 ```jsx
 <MouseParticles g={1} num={6} color="random" cull="stats,image-wrapper" level={6} />
 ```
-#### * `g` - Whether to add gravity: Number
 
-#### * `num` - The number of particles emitted each time: Number
+key | describe |type | example
+----|-----|-----|------
+`g` | Whether to add gravity | number | `1`
+`num` | The number of particles emitted each time | number | `3`
+`radius` | The radius of every particle | number | `10`
+`alpha` | The alpha of every particle | number | `.1`
+`tha` | The Particle emitter angle | number | `20`
+`v` | The Particle emitter Particle velocity | number | `0.5`
+`life` | The life of every particle | number | `1.2`
+`color` | Particle color  | array or string | `<MouseParticles g={1} color="random" /> // or <MouseParticles g={1} color={["#ff0000", "#ccdfs2"]} />`
+`cull` | Eliminate dom's className without triggering animation  | string | `<MouseParticles cull="container,image-wrapper" />`
+`level` | Detect levels of culling animation  | number | `6`
 
-#### * `radius` - The radius of every particle: Number
-
-#### * `alpha` - The alpha of every particle: Number
-
-#### * `tha` - The Particle emitter angle
-
-#### * `v` - The Particle emitter Particle velocity
-
-#### * `life` - The life of every particle: Number
-
-#### * `color` - Particle color, array or string
-```javascript
- <MouseParticles g={1} color="random" />
- // or
-
- <MouseParticles g={1} color={["#ff0000", "#ccdfs2"]} />
-```
-
-#### * `cull` - Eliminate dom's className without triggering animation
-```javascript
- <MouseParticles cull="container,image-wrapper" />
-```
-
-#### * `level` - Detect levels of culling animation
+---
 
 ## Contribution
 I very much hope that you can work with me to modify the code. I also have a lot of fun ideas. Maybe you can join me to implement it.
