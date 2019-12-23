@@ -82,7 +82,7 @@ class MouseParticles extends React.Component {
 
   isCullDom(e) {
     this.level = 0;
-
+    
     if (isInputText(e.target)) return true;
     if (isTextBox(e.target)) return true;
     if (!this.cullClassList || !this.cullClassList.length) return false;
@@ -155,13 +155,15 @@ class MouseParticles extends React.Component {
 
 // utils function
 function isInputText(element) {
-  return element instanceof HTMLInputElement && element.type == "text";
+  return element instanceof HTMLInputElement && element.type === "text";
 }
 
 function isTextBox(element) {
   let tagName = element.tagName.toLowerCase();
   if (tagName === "textarea") return true;
-  if (tagName !== "input") return false;
+  if (tagName === "input") return true;
+
+  return false;
 }
 
 export default MouseParticles;
