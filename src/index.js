@@ -24,7 +24,7 @@ class MouseParticles extends React.Component {
     this.dom.style.left = "0px";
     this.dom.style.top = "0px";
     this.dom.style.zIndex = 9999;
-    this.dom.pointerEvents = "none";
+    this.dom.style.pointerEvents = "none";
     this.dom.id = `rmps_${(Math.random() * 999999) >> 0}`;
     document.body.appendChild(this.dom);
   }
@@ -82,7 +82,7 @@ class MouseParticles extends React.Component {
 
   isCullDom(e) {
     this.level = 0;
-    
+
     if (isInputText(e.target)) return true;
     if (isTextBox(e.target)) return true;
     if (!this.cullClassList || !this.cullClassList.length) return false;
