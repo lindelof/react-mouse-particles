@@ -25,7 +25,7 @@ class MouseParticles extends React.Component {
     this.dom.style.top = "0px";
     this.dom.style.zIndex = 9999;
     this.dom.style.pointerEvents = "none";
-    this.dom.id = `rmps_${(Math.random() * 999999) >> 0}`;
+    this.dom.id = `mouse_ps_${(Math.random() * 999999) >> 0}`;
     document.body.appendChild(this.dom);
   }
 
